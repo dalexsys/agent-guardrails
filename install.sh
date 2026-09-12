@@ -58,12 +58,14 @@ RULE_EOF
     fi
 fi
 
-# 3. Setup Tool Adapters (.cursorrules, CLAUDE.md, .github/copilot-instructions.md)
-echo -e "${GREEN}✔ Installing IDE adapters (.cursorrules, CLAUDE.md, .github/copilot-instructions.md)...${NC}"
-cp "$SCRIPT_DIR/templates/.cursorrules" .cursorrules
-cp "$SCRIPT_DIR/templates/CLAUDE.md" CLAUDE.md
+# 3. Setup Universal Tool Adapters (Symlinked to AGENTS.md)
+echo -e "${GREEN}✔ Linking universal adapters to AGENTS.md (.cursorrules, CLAUDE.md, .windsurfrules, .clinerules, .github/copilot-instructions.md)...${NC}"
+ln -sf AGENTS.md .cursorrules
+ln -sf AGENTS.md CLAUDE.md
+ln -sf AGENTS.md .windsurfrules
+ln -sf AGENTS.md .clinerules
 mkdir -p .github
-cp "$SCRIPT_DIR/templates/copilot-instructions.md" .github/copilot-instructions.md
+(cd .github && ln -sf ../AGENTS.md copilot-instructions.md)
 
 # 4. Install Skills & Commands
 # Cursor

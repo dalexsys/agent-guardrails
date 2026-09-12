@@ -11,8 +11,14 @@ Designed to prevent autonomous agents and subagents from implementing unfinished
 Run inside the root directory of any repository on any machine:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/dalexsys/agent-guardrails/main/install.sh | bash
+# Via GitHub CLI (recommended):
+gh repo clone dalexsys/agent-guardrails /tmp/ag -- --depth=1 && /tmp/ag/install.sh && rm -rf /tmp/ag
+
+# Or via Git SSH:
+git clone --depth=1 git@github.com:dalexsys/agent-guardrails.git /tmp/ag && /tmp/ag/install.sh && rm -rf /tmp/ag
 ```
+
+*(Tip: Add `alias init-guardrails='gh repo clone dalexsys/agent-guardrails /tmp/ag -- --depth=1 && /tmp/ag/install.sh && rm -rf /tmp/ag'` to your `~/.zshrc` or `~/.bashrc` to run it with a single word).*
 
 ---
 
