@@ -22,6 +22,28 @@ git clone --depth=1 git@github.com:dalexsys/agent-guardrails.git /tmp/ag && /tmp
 
 ---
 
+## 🤖 Готовый промпт для любого ИИ-агента (Prompt for Agents)
+
+Если вы открыли чат с агентом (Cursor, Claude Code, Antigravity, OpenCode, Codex и т.д.) в любом другом проекте и хотите, чтобы агент сам всё подключил, просто отправьте ему этот текст:
+
+### Русский вариант:
+```text
+Подключи в наш проект правила безопасности и мультиагентные скиллы из репозитория dalexsys/agent-guardrails.
+Выполни в корне проекта команду:
+gh repo clone dalexsys/agent-guardrails /tmp/ag -- --depth=1 && /tmp/ag/install.sh && rm -rf /tmp/ag
+Убедись, что созданы AGENTS.md, симлинки адаптеров (.cursorrules, CLAUDE.md и т.д.) и проверены скиллы opsx-team.
+```
+
+### English version:
+```text
+Install AI agent security guardrails and multi-agent skills from dalexsys/agent-guardrails.
+Run in project root:
+gh repo clone dalexsys/agent-guardrails /tmp/ag -- --depth=1 && /tmp/ag/install.sh && rm -rf /tmp/ag
+Verify AGENTS.md, adapter symlinks (.cursorrules, CLAUDE.md), and opsx-team skills.
+```
+
+---
+
 ## 🛡️ The 4-Layer Defense Architecture
 
 | Layer | Component | How It Protects |
