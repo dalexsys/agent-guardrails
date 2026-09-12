@@ -1,0 +1,7 @@
+# Core Agent Guardrails
+
+Always read and follow `AGENTS.md` before performing any tasks in this repository.
+
+## Strict Rules:
+1. **STOP / СТОП Change Execution Freeze**:
+   NEVER implement, modify, or run tasks for any OpenSpec change that contains `STOP` or `СТОП` (case-insensitive) in its folder name, `proposal.md`, or `tasks.md`. Coordinators and workers MUST skip these changes unconditionally.
