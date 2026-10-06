@@ -111,7 +111,7 @@ operations:
         [STOP]) or that forbids automated implementation without explicit human
         confirmation. Skip it and tell the user.
       - >-
-        Never put real API keys, production tokens (live_, sk-, ghp_, rllm_),
+        Never put real API keys, production tokens (live_, sk-, ghp_),
         passwords or other secrets into repository files, scripts, test
         fixtures or markdown. Use sanitized dummy placeholders only.
 CFG_EOF
