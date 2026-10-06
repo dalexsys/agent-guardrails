@@ -59,21 +59,37 @@ Verify AGENTS.md, adapter symlinks (.cursorrules, CLAUDE.md), and opsx-team skil
 
 ```text
 ├── AGENTS.md                          # Core guidelines & execution guardrails
-├── .cursorrules                       # Cursor IDE rules adapter
-├── CLAUDE.md                          # Claude Code adapter
+├── .cursorrules / .clinerules / .windsurfrules   # symlinks -> AGENTS.md
+├── CLAUDE.md                          # Claude Code adapter (symlink -> AGENTS.md)
 ├── .github/
-│   └── copilot-instructions.md       # GitHub Copilot adapter
+│   └── copilot-instructions.md       # GitHub Copilot adapter (symlink)
 ├── .cursor/
 │   ├── commands/                      # /opsx-team, /opsx-team2 slash commands
-│   └── skills/                        # Multi-agent coordinator skills
+│   └── skills/                        # opsx-team, opsx-team2 coordinator skills
 ├── .opencode/
 │   ├── agent/                         # Worker subagents with STOP circuit-breakers
-│   ├── commands/                      # OpenCode slash commands
-│   └── skills/                        # OpenCode Go tier routing skills
-└── .agent/
-    ├── workflows/                     # Antigravity workflows
-    └── skills/                        # Antigravity skills
+│   ├── commands/                      # /opsx-team, /opsx-team2
+│   └── skills/                        # opsx-team, opsx-team2 (OpenCode Go routing)
+├── .agent/
+│   ├── workflows/                     # Antigravity opsx-team workflows
+│   └── skills/                        # Antigravity opsx-team skills
+└── openspec/config.yaml               # + operations.apply.guidance (STOP / СТОП, secrets)
 ```
+
+---
+
+## 🔁 Safe with `openspec update`
+
+The installer **never ships or overwrites files that OpenSpec generates** (`opsx-apply`,
+`opsx-archive`, `opsx-explore`, `opsx-propose`, `opsx-sync`, `opsx-update`,
+`openspec-apply-change`, ...). Those belong to `openspec init` / `openspec update`.
+
+- Guardrail-owned files (`AGENTS.md`, `opsx-team*`, subagent workers) are not part of
+  OpenSpec's generated set, so `openspec update` does not touch them.
+- The STOP / СТОП and secrets rules for the OpenSpec workflow live in
+  `openspec/config.yaml` → `operations.apply.guidance`, which `openspec update` keeps.
+  The installer adds them automatically (or prints a hint if you already have an `operations:` block).
+- Order does not matter: run `openspec init` and the installer in any order, repeatedly.
 
 ---
 
