@@ -59,7 +59,7 @@ Verify AGENTS.md, adapter symlinks (.cursorrules, CLAUDE.md), and opsx-team skil
 
 ```text
 ├── AGENTS.md                          # Core guidelines & execution guardrails
-├── .cursorrules / .clinerules / .windsurfrules   # symlinks -> AGENTS.md
+├── .cursorrules / .windsurfrules      # symlinks -> AGENTS.md
 ├── CLAUDE.md                          # Claude Code adapter (symlink -> AGENTS.md)
 ├── .github/
 │   └── copilot-instructions.md       # GitHub Copilot adapter (symlink)

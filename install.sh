@@ -59,11 +59,10 @@ RULE_EOF
 fi
 
 # 3. Setup Universal Tool Adapters (Symlinked to AGENTS.md)
-echo -e "${GREEN}✔ Linking universal adapters to AGENTS.md (.cursorrules, CLAUDE.md, .windsurfrules, .clinerules, .github/copilot-instructions.md)...${NC}"
+echo -e "${GREEN}✔ Linking universal adapters to AGENTS.md (.cursorrules, CLAUDE.md, .windsurfrules, .github/copilot-instructions.md)...${NC}"
 ln -sf AGENTS.md .cursorrules
 ln -sf AGENTS.md CLAUDE.md
 ln -sf AGENTS.md .windsurfrules
-ln -sf AGENTS.md .clinerules
 mkdir -p .github
 (cd .github && ln -sf ../AGENTS.md copilot-instructions.md)
 
