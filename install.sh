@@ -67,33 +67,58 @@ ln -sf AGENTS.md .clinerules
 mkdir -p .github
 (cd .github && ln -sf ../AGENTS.md copilot-instructions.md)
 
-# 4. Install Skills & Commands
+# 4. Install guardrail-owned skills & commands
+# Only files that OpenSpec does NOT generate are copied (opsx-team*, subagent workers).
+# OpenSpec-generated files (opsx-apply, opsx-archive, openspec-apply-change, ...) are never
+# shipped or overwritten here: `openspec init` / `openspec update` own them, so an update
+# can never silently undo guardrails and guardrails can never downgrade OpenSpec.
 # Cursor
 mkdir -p .cursor/commands .cursor/skills
-cp -r "$SCRIPT_DIR/bundle/.cursor/commands/"* .cursor/commands/
-cp -r "$SCRIPT_DIR/bundle/.cursor/skills/"* .cursor/skills/
-echo -e "${GREEN}✔ Installed Cursor skills & slash commands (.cursor/skills, .cursor/commands)${NC}"
+cp "$SCRIPT_DIR"/bundle/.cursor/commands/opsx-team*.md .cursor/commands/
+cp -r "$SCRIPT_DIR"/bundle/.cursor/skills/opsx-team* .cursor/skills/
+echo -e "${GREEN}✔ Installed Cursor opsx-team skills & commands (.cursor/skills, .cursor/commands)${NC}"
 
 # OpenCode
 mkdir -p .opencode/agent .opencode/commands .opencode/skills
-cp -r "$SCRIPT_DIR/bundle/.opencode/agent/"* .opencode/agent/
-cp -r "$SCRIPT_DIR/bundle/.opencode/commands/"* .opencode/commands/
-cp -r "$SCRIPT_DIR/bundle/.opencode/skills/"* .opencode/skills/
-echo -e "${GREEN}✔ Installed OpenCode subagents & skills (.opencode/agent, .opencode/skills)${NC}"
+cp "$SCRIPT_DIR"/bundle/.opencode/agent/*.md .opencode/agent/
+cp "$SCRIPT_DIR"/bundle/.opencode/commands/opsx-team*.md .opencode/commands/
+cp -r "$SCRIPT_DIR"/bundle/.opencode/skills/opsx-team* .opencode/skills/
+echo -e "${GREEN}✔ Installed OpenCode subagents & opsx-team skills (.opencode/agent, .opencode/skills)${NC}"
 
 # Antigravity
 mkdir -p .agent/workflows .agent/skills
-cp -r "$SCRIPT_DIR/bundle/.agent/workflows/"* .agent/workflows/
-cp -r "$SCRIPT_DIR/bundle/.agent/skills/"* .agent/skills/
-echo -e "${GREEN}✔ Installed Antigravity skills & workflows (.agent/skills, .agent/workflows)${NC}"
+cp "$SCRIPT_DIR"/bundle/.agent/workflows/opsx-team*.md .agent/workflows/
+cp -r "$SCRIPT_DIR"/bundle/.agent/skills/opsx-team* .agent/skills/
+echo -e "${GREEN}✔ Installed Antigravity opsx-team skills & workflows (.agent/skills, .agent/workflows)${NC}"
 
-# 5. Check OpenSpec config if present
+# 5. OpenSpec integration: STOP / СТОП guardrail in the update-proof config location
 if [ -f "openspec/config.yaml" ]; then
-    if ! grep -q -i "STOP / СТОП Guardrail" openspec/config.yaml; then
-        echo -e "${YELLOW}ℹ Tip: Add STOP / СТОП Guardrail to 'operations.apply.guidance' in openspec/config.yaml${NC}"
+    if grep -q -i "STOP / СТОП Guardrail" openspec/config.yaml; then
+        echo -e "${GREEN}✔ openspec/config.yaml already contains the STOP / СТОП guardrail.${NC}"
+    elif grep -q -E '^operations:' openspec/config.yaml; then
+        echo -e "${YELLOW}ℹ openspec/config.yaml already has an 'operations:' block. Add the STOP / СТОП Guardrail to operations.apply.guidance manually (see README).${NC}"
     else
-        echo -e "${GREEN}✔ OpenSpec config.yaml contains STOP / СТОП guardrail.${NC}"
+        echo -e "${YELLOW}✔ Adding STOP / СТОП guardrail to openspec/config.yaml (operations.apply.guidance)...${NC}"
+        cat << 'CFG_EOF' >> openspec/config.yaml
+
+# Project guardrails (kept here so `openspec update` does not overwrite them;
+# the same rules live in AGENTS.md). Added by agent-guardrails.
+operations:
+  apply:
+    guidance:
+      - >-
+        STOP / СТОП Guardrail: do not implement or modify any change whose folder
+        name, proposal or tasks contain STOP or СТОП (case-insensitive, e.g.
+        [STOP]) or that forbids automated implementation without explicit human
+        confirmation. Skip it and tell the user.
+      - >-
+        Never put real API keys, production tokens (live_, sk-, ghp_, rllm_),
+        passwords or other secrets into repository files, scripts, test
+        fixtures or markdown. Use sanitized dummy placeholders only.
+CFG_EOF
     fi
+else
+    echo -e "${YELLOW}ℹ OpenSpec is not initialised here. Run 'openspec init' (any time, order does not matter) to get the base /opsx-* commands; guardrails never ship or overwrite them.${NC}"
 fi
 
 echo -e "\n${BLUE}================================================================${NC}"
